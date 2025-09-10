@@ -1,2 +1,0 @@
-# Nazfiyyah.github.io
-Nazel

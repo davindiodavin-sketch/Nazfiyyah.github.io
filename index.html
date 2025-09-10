@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data Pengeluaran Alfiyyah & Nazel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      max-width: 500px;
+      margin: 0 auto 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    select, input[type="text"], input[type="number"], input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 90%;
+      margin: 0 auto 40px auto;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    .summary {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .summary h2 {
+      margin-top: 0;
+      color: #007bff;
+    }
+    .summary p {
+      font-size: 1.1em;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Data Pengeluaran Alfiyyah & Nazel</h1>
+
+  <form id="formPengeluaran" style="outline: rgb(0, 0, 0) dotted 3px; outline-offset: 1px;">
+    <label for="nama" style="">Nama:</label>
+    <select id="nama" required="" style="">
+      <option value="" disabled="" selected="">-- Pilih Nama --</option>
+      <option value="Alfiyyah">Alfiyyah</option>
+      <option value="Nazel">Nazel</option>
+    </select>
+  <label for="deskripsi">Deskripsi:</label>
+  <input type="text" id="deskripsi" placeholder="Misal: Makan, Transportasi" required>
+
+  <label for="tanggal">Tanggal:</label>
+  <input type="date" id="tanggal" required>
+
+  <label for="jumlah">Jumlah (Rp):</label>
+  <input type="number" id="jumlah" min="0" step="100" placeholder="Masukkan jumlah pengeluaran" required>
+
+  <button type="submit">Tambah Pengeluaran</button>
+</form>
+
+
+  <table id="tabelPengeluaran">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Kategori</th>
+        <th>Deskripsi</th>
+        <th>Tanggal</th>
+        <th>Jumlah (Rp)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data pengeluaran akan muncul di sini -->
+    </tbody>
+  </table>
+
+  <div class="summary" id="summary">
+    <h2>Ringkasan Pengeluaran</h2>
+    <p><strong>Alfiyyah</strong></p>
+    <p>Pokok: Rp <span id="alfiyyahPokok">0</span></p>
+    <p>Nonpokok: Rp <span id="alfiyyahNonpokok">0</span></p>
+    <p><strong>Total: Rp <span id="alfiyyahTotal">0</span></strong></p>
+    <hr />
+    <p><strong>Nazel</strong></p>
+    <p>Pokok: Rp <span id="nazelPokok">0</span></p>
+    <p>Nonpokok: Rp <span id="nazelNonpokok">0</span></p>
+    <p><strong>Total: Rp <span id="nazelTotal">0</span></strong></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('formPengeluaran');
+    const tbody = document.querySelector('#tabelPengeluaran tbody');
+
+    // Data pengeluaran disimpan di array
+    let dataPengeluaran = [];
+
+    function formatRupiah(angka) {
+      return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function updateTable() {
+      tbody.innerHTML = '';
+      dataPengeluaran.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.nama}</td>
+          <td>${item.kategori}</td>
+          <td>${item.deskripsi}</td>
+          <td>${item.tanggal}</td>
+          <td>Rp ${formatRupiah(item.jumlah)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateSummary() {
+      // Hitung total per nama dan kategori
+      const summary = {
+        Alfiyyah: { Pokok: 0, Nonpokok: 0 },
+        Nazel: { Pokok: 0, Nonpokok: 0 }
+      };
+
+      dataPengeluaran.forEach(item => {
+        summary[item.nama][item.kategori] += item.jumlah;
+      });
+
+      document.getElementById('alfiyyahPokok').textContent = formatRupiah(summary.Alfiyyah.Pokok);
+      document.getElementById('alfiyyahNonpokok').textContent = formatRupiah(summary.Alfiyyah.Nonpokok);
+      document.getElementById('alfiyyahTotal').textContent = formatRupiah(summary.Alfiyyah.Pokok + summary.Alfiyyah.Nonpokok);
+
+      document.getElementById('nazelPokok').textContent = formatRupiah(summary.Nazel.Pokok);
+      document.getElementById('nazelNonpokok').textContent = formatRupiah(summary.Nazel.Nonpokok);
+      document.getElementById('nazelTotal').textContent = formatRupiah(summary.Nazel.Pokok + summary.Nazel.Nonpokok);
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nama = form.nama.value;
+      const kategori = form.kategori.value;
+      const deskripsi = form.deskripsi.value.trim();
+      const tanggal = form.tanggal.value;
+      const jumlah = parseInt(form.jumlah.value);
+
+      if (!nama || !kategori || !deskripsi || !tanggal || isNaN(jumlah) || jumlah < 0) {
+        alert('Mohon isi semua data dengan benar.');
+        return;
+      }
+
+      dataPengeluaran.push({ nama, kategori, deskripsi, tanggal, jumlah });
+
+      updateTable();
+      updateSummary();
+
+      form.reset();
+      form.nama.focus();
+    });
+  </script>
+</body>
+</html>
+</content>
+</create_file>
