@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aplikasi Data Pengeluaran</title>
-  <!-- Icon library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -14,7 +13,6 @@
       margin: 0;
       padding: 20px;
     }
-
     .container {
       max-width: 900px;
       margin: auto;
@@ -22,110 +20,37 @@
       padding: 25px;
       border-radius: 16px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      transition: 0.3s;
     }
-
-    .container:hover {
-      transform: scale(1.01);
-    }
-
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 25px;
-    }
-
+    h1 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
     form {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
       margin-bottom: 20px;
     }
-
-    label {
-      font-weight: bold;
-      color: #34495e;
-      margin-bottom: 5px;
-    }
-
+    label { font-weight: bold; color: #34495e; margin-bottom: 5px; }
     input, select, textarea {
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      width: 100%;
-      font-size: 14px;
-      transition: 0.3s;
+      padding: 12px; border: 1px solid #ccc; border-radius: 10px; width: 100%;
     }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 5px rgba(0,123,255,0.4);
-      outline: none;
-    }
-
     button {
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background: #007bff;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 0.3s;
-      width: 100%;
+      padding: 12px; border: none; border-radius: 10px;
+      background: #007bff; color: white; font-size: 15px;
+      cursor: pointer; transition: 0.3s; width: 100%;
     }
-
-    button i {
-      margin-right: 6px;
-    }
-
-    button:hover {
-      background: #0056b3;
-      transform: scale(1.05);
-    }
-
-    h2 {
-      margin-top: 30px;
-      margin-bottom: 10px;
-      color: #2c3e50;
-    }
-
+    button:hover { background: #0056b3; transform: scale(1.05); }
     table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      width: 100%; border-collapse: collapse; margin-top: 10px;
+      border-radius: 10px; overflow: hidden;
     }
-
-    th, td {
-      padding: 14px;
-      border-bottom: 1px solid #eee;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    th {
-      background: #007bff;
-      color: white;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    tr:hover td {
-      background: #f1f8ff;
-    }
-
-    .icon {
-      margin-right: 8px;
-      color: #007bff;
-    }
+    th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
+    th { background: #007bff; color: white; }
+    tr:hover td { background: #f1f8ff; }
+    .total { margin-top: 20px; font-weight: bold; color: #2c3e50; text-align: right; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1><i class="fa-solid fa-wallet icon"></i> Data Pengeluaran Uang</h1>
+    <h1><i class="fa-solid fa-wallet"></i> Data Pengeluaran Uang</h1>
 
     <form id="pengeluaranForm">
       <div>
@@ -136,7 +61,6 @@
           <option value="Non Pokok">Non Pokok</option>
         </select>
       </div>
-
       <div>
         <label>Nama</label>
         <select id="nama" required>
@@ -145,28 +69,24 @@
           <option value="Alfiyyah">Alfiyyah</option>
         </select>
       </div>
-
       <div>
         <label>Tanggal</label>
         <input type="date" id="tanggal" required>
       </div>
-
       <div>
         <label>Jumlah (Rp)</label>
         <input type="number" id="jumlah" required>
       </div>
-
       <div style="grid-column: 1 / 3;">
         <label>Deskripsi</label>
-        <textarea id="deskripsi" rows="2" placeholder="Tuliskan keterangan pengeluaran..." required></textarea>
+        <textarea id="deskripsi" rows="2" required></textarea>
       </div>
-
       <div style="grid-column: 1 / 3;">
         <button type="submit"><i class="fa-solid fa-plus-circle"></i> Tambah Pengeluaran</button>
       </div>
     </form>
 
-    <h2><i class="fa-solid fa-list icon"></i> Daftar Pengeluaran</h2>
+    <h2><i class="fa-solid fa-list"></i> Daftar Pengeluaran</h2>
     <table>
       <thead>
         <tr>
@@ -177,35 +97,56 @@
           <th>Deskripsi</th>
         </tr>
       </thead>
-      <tbody id="dataTable">
-        <!-- Data akan tampil di sini -->
-      </tbody>
+      <tbody id="dataTable"></tbody>
     </table>
+
+    <div class="total" id="totalPengeluaran">Total: Rp 0</div>
   </div>
 
   <script>
     const form = document.getElementById("pengeluaranForm");
     const dataTable = document.getElementById("dataTable");
+    const totalPengeluaran = document.getElementById("totalPengeluaran");
+
+    let data = JSON.parse(localStorage.getItem("pengeluaran")) || [];
+
+    function renderTable() {
+      dataTable.innerHTML = "";
+      let total = 0;
+
+      data.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${item.kategori}</td>
+          <td>${item.nama}</td>
+          <td>${item.tanggal}</td>
+          <td>Rp ${parseInt(item.jumlah).toLocaleString()}</td>
+          <td>${item.deskripsi}</td>
+        `;
+        dataTable.appendChild(row);
+        total += parseInt(item.jumlah);
+      });
+
+      totalPengeluaran.textContent = "Total: Rp " + total.toLocaleString();
+    }
 
     form.addEventListener("submit", function(e) {
       e.preventDefault();
-      const kategori = document.getElementById("kategori").value;
-      const nama = document.getElementById("nama").value;
-      const tanggal = document.getElementById("tanggal").value;
-      const jumlah = document.getElementById("jumlah").value;
-      const deskripsi = document.getElementById("deskripsi").value;
+      const item = {
+        kategori: document.getElementById("kategori").value,
+        nama: document.getElementById("nama").value,
+        tanggal: document.getElementById("tanggal").value,
+        jumlah: document.getElementById("jumlah").value,
+        deskripsi: document.getElementById("deskripsi").value
+      };
 
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${kategori}</td>
-        <td>${nama}</td>
-        <td>${tanggal}</td>
-        <td>Rp ${parseInt(jumlah).toLocaleString()}</td>
-        <td>${deskripsi}</td>
-      `;
-      dataTable.appendChild(row);
+      data.push(item);
+      localStorage.setItem("pengeluaran", JSON.stringify(data));
+      renderTable();
       form.reset();
     });
+
+    renderTable();
   </script>
 </body>
 </html>
