@@ -1,210 +1,211 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Data Pengeluaran Alfiyyah & Nazel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Data Pengeluaran</title>
+  <!-- Icon library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #f9f9f9;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #e4ecf7);
+      margin: 0;
+      padding: 20px;
     }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .container:hover {
+      transform: scale(1.01);
+    }
+
     h1 {
       text-align: center;
-      color: #333;
+      color: #2c3e50;
+      margin-bottom: 25px;
     }
+
     form {
-      max-width: 500px;
-      margin: 0 auto 30px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
     }
+
     label {
-      display: block;
-      margin-top: 10px;
       font-weight: bold;
+      color: #34495e;
+      margin-bottom: 5px;
     }
-    select, input[type="text"], input[type="number"], input[type="date"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      border-radius: 4px;
+
+    input, select, textarea {
+      padding: 12px;
       border: 1px solid #ccc;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 14px;
+      transition: 0.3s;
     }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0,123,255,0.4);
+      outline: none;
+    }
+
     button {
-      margin-top: 15px;
-      padding: 10px 15px;
-      background-color: #007bff;
+      padding: 12px;
       border: none;
+      border-radius: 10px;
+      background: #007bff;
       color: white;
-      font-weight: bold;
-      border-radius: 4px;
+      font-size: 15px;
       cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
     }
+
+    button i {
+      margin-right: 6px;
+    }
+
     button:hover {
-      background-color: #0056b3;
+      background: #0056b3;
+      transform: scale(1.05);
     }
+
+    h2 {
+      margin-top: 30px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
     table {
-      width: 90%;
-      margin: 0 auto 40px auto;
+      width: 100%;
       border-collapse: collapse;
-      background: #fff;
-      border-radius: 8px;
+      margin-top: 10px;
+      border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
+
     th, td {
-      padding: 12px 15px;
-      border-bottom: 1px solid #ddd;
+      padding: 14px;
+      border-bottom: 1px solid #eee;
       text-align: center;
+      font-size: 14px;
     }
+
     th {
-      background-color: #007bff;
+      background: #007bff;
       color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .summary {
-      max-width: 500px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 15px 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+
+    tr:hover td {
+      background: #f1f8ff;
     }
-    .summary h2 {
-      margin-top: 0;
+
+    .icon {
+      margin-right: 8px;
       color: #007bff;
-    }
-    .summary p {
-      font-size: 1.1em;
-      margin: 8px 0;
     }
   </style>
 </head>
 <body>
-  <h1>Data Pengeluaran Alfiyyah & Nazel</h1>
+  <div class="container">
+    <h1><i class="fa-solid fa-wallet icon"></i> Data Pengeluaran Uang</h1>
 
-  <form id="formPengeluaran" style="outline: rgb(0, 0, 0) dotted 3px; outline-offset: 1px;">
-    <label for="nama" style="">Nama:</label>
-    <select id="nama" required="" style="">
-      <option value="" disabled="" selected="">-- Pilih Nama --</option>
-      <option value="Alfiyyah">Alfiyyah</option>
-      <option value="Nazel">Nazel</option>
-    </select>
-  <label for="deskripsi">Deskripsi:</label>
-  <input type="text" id="deskripsi" placeholder="Misal: Makan, Transportasi" required>
+    <form id="pengeluaranForm">
+      <div>
+        <label>Kategori</label>
+        <select id="kategori" required>
+          <option value="">-- Pilih --</option>
+          <option value="Pokok">Pokok</option>
+          <option value="Non Pokok">Non Pokok</option>
+        </select>
+      </div>
 
-  <label for="tanggal">Tanggal:</label>
-  <input type="date" id="tanggal" required>
+      <div>
+        <label>Nama</label>
+        <select id="nama" required>
+          <option value="">-- Pilih --</option>
+          <option value="Nazel">Nazel</option>
+          <option value="Alfiyyah">Alfiyyah</option>
+        </select>
+      </div>
 
-  <label for="jumlah">Jumlah (Rp):</label>
-  <input type="number" id="jumlah" min="0" step="100" placeholder="Masukkan jumlah pengeluaran" required>
+      <div>
+        <label>Tanggal</label>
+        <input type="date" id="tanggal" required>
+      </div>
 
-  <button type="submit">Tambah Pengeluaran</button>
-</form>
+      <div>
+        <label>Jumlah (Rp)</label>
+        <input type="number" id="jumlah" required>
+      </div>
 
+      <div style="grid-column: 1 / 3;">
+        <label>Deskripsi</label>
+        <textarea id="deskripsi" rows="2" placeholder="Tuliskan keterangan pengeluaran..." required></textarea>
+      </div>
 
-  <table id="tabelPengeluaran">
-    <thead>
-      <tr>
-        <th>Nama</th>
-        <th>Kategori</th>
-        <th>Deskripsi</th>
-        <th>Tanggal</th>
-        <th>Jumlah (Rp)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Data pengeluaran akan muncul di sini -->
-    </tbody>
-  </table>
+      <div style="grid-column: 1 / 3;">
+        <button type="submit"><i class="fa-solid fa-plus-circle"></i> Tambah Pengeluaran</button>
+      </div>
+    </form>
 
-  <div class="summary" id="summary">
-    <h2>Ringkasan Pengeluaran</h2>
-    <p><strong>Alfiyyah</strong></p>
-    <p>Pokok: Rp <span id="alfiyyahPokok">0</span></p>
-    <p>Nonpokok: Rp <span id="alfiyyahNonpokok">0</span></p>
-    <p><strong>Total: Rp <span id="alfiyyahTotal">0</span></strong></p>
-    <hr />
-    <p><strong>Nazel</strong></p>
-    <p>Pokok: Rp <span id="nazelPokok">0</span></p>
-    <p>Nonpokok: Rp <span id="nazelNonpokok">0</span></p>
-    <p><strong>Total: Rp <span id="nazelTotal">0</span></strong></p>
+    <h2><i class="fa-solid fa-list icon"></i> Daftar Pengeluaran</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Kategori</th>
+          <th>Nama</th>
+          <th>Tanggal</th>
+          <th>Jumlah (Rp)</th>
+          <th>Deskripsi</th>
+        </tr>
+      </thead>
+      <tbody id="dataTable">
+        <!-- Data akan tampil di sini -->
+      </tbody>
+    </table>
   </div>
 
   <script>
-    const form = document.getElementById('formPengeluaran');
-    const tbody = document.querySelector('#tabelPengeluaran tbody');
+    const form = document.getElementById("pengeluaranForm");
+    const dataTable = document.getElementById("dataTable");
 
-    // Data pengeluaran disimpan di array
-    let dataPengeluaran = [];
-
-    function formatRupiah(angka) {
-      return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-
-    function updateTable() {
-      tbody.innerHTML = '';
-      dataPengeluaran.forEach((item, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${item.nama}</td>
-          <td>${item.kategori}</td>
-          <td>${item.deskripsi}</td>
-          <td>${item.tanggal}</td>
-          <td>Rp ${formatRupiah(item.jumlah)}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function updateSummary() {
-      // Hitung total per nama dan kategori
-      const summary = {
-        Alfiyyah: { Pokok: 0, Nonpokok: 0 },
-        Nazel: { Pokok: 0, Nonpokok: 0 }
-      };
-
-      dataPengeluaran.forEach(item => {
-        summary[item.nama][item.kategori] += item.jumlah;
-      });
-
-      document.getElementById('alfiyyahPokok').textContent = formatRupiah(summary.Alfiyyah.Pokok);
-      document.getElementById('alfiyyahNonpokok').textContent = formatRupiah(summary.Alfiyyah.Nonpokok);
-      document.getElementById('alfiyyahTotal').textContent = formatRupiah(summary.Alfiyyah.Pokok + summary.Alfiyyah.Nonpokok);
-
-      document.getElementById('nazelPokok').textContent = formatRupiah(summary.Nazel.Pokok);
-      document.getElementById('nazelNonpokok').textContent = formatRupiah(summary.Nazel.Nonpokok);
-      document.getElementById('nazelTotal').textContent = formatRupiah(summary.Nazel.Pokok + summary.Nazel.Nonpokok);
-    }
-
-    form.addEventListener('submit', function(e) {
+    form.addEventListener("submit", function(e) {
       e.preventDefault();
+      const kategori = document.getElementById("kategori").value;
+      const nama = document.getElementById("nama").value;
+      const tanggal = document.getElementById("tanggal").value;
+      const jumlah = document.getElementById("jumlah").value;
+      const deskripsi = document.getElementById("deskripsi").value;
 
-      const nama = form.nama.value;
-      const kategori = form.kategori.value;
-      const deskripsi = form.deskripsi.value.trim();
-      const tanggal = form.tanggal.value;
-      const jumlah = parseInt(form.jumlah.value);
-
-      if (!nama || !kategori || !deskripsi || !tanggal || isNaN(jumlah) || jumlah < 0) {
-        alert('Mohon isi semua data dengan benar.');
-        return;
-      }
-
-      dataPengeluaran.push({ nama, kategori, deskripsi, tanggal, jumlah });
-
-      updateTable();
-      updateSummary();
-
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${kategori}</td>
+        <td>${nama}</td>
+        <td>${tanggal}</td>
+        <td>Rp ${parseInt(jumlah).toLocaleString()}</td>
+        <td>${deskripsi}</td>
+      `;
+      dataTable.appendChild(row);
       form.reset();
-      form.nama.focus();
     });
   </script>
 </body>
 </html>
-</content>
-</create_file>
